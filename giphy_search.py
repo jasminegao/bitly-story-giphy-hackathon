@@ -2,7 +2,7 @@ import requests
 import json
 
 api_key = "dc6zaTOxFJmzC"
-endpoint = "http://api.giphy.com/v1/gifs/search"
+giphy_search_url = "http://api.giphy.com/v1/gifs/search"
 
 class Giphy:
     def __init__(self, api_key=api_key):
@@ -18,7 +18,7 @@ class Giphy:
                 'q': phrase,
                 'limit': 5
             }
-            response = requests.get(endpoint, params=query_params)
+            response = requests.get(giphy_search_url, params=query_params)
 
             data = json.loads(response.content)
 
