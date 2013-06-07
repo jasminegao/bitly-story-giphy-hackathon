@@ -31,7 +31,7 @@ class BurstingPhraseFetcher:
     if self._access_token:
       params["access_token"] = self._access_token
 
-    data_raw = requests.get(url, params=params)
+    response = requests.get(url, params=params)
     data = response.json()
     if not self.check_status(data):
       return []

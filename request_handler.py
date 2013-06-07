@@ -17,7 +17,6 @@ phrase_fetcher = bursting_phrase_fetcher.BurstingPhraseFetcher(api_key=api_key)
 giphy = giphy_search.Giphy()
 
 
-
 @app.route('/bursting_phrases')
 def bursting_phrases():
   phrases = phrase_fetcher.get_bursting_phrases()
@@ -31,8 +30,9 @@ def bursting_phrases():
 
   #TODO: sort the stories by click rate
   for story in stories:
+    story.rt_url = "http://rt.ly/story?story_id=" + story._story_id
     story.phrases = story.get_story_phrases()
-    print story.phrases
+    #story.rates = story.get_story_rates()
     story_gifs = giphy.giphy_search(story.phrases)
     story.gif_urls = story_gifs
 
