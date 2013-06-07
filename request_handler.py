@@ -32,6 +32,7 @@ def bursting_phrases():
     story.rt_url = "http://rt.ly/story?story_id=" + story._story_id
     story.phrases = story.get_story_phrases()
     story.rate = story.get_story_rates()
+    story.titles = story.get_story_titles()
     story_gifs = giphy.giphy_search(story.phrases)
     story.gif_urls = story_gifs
 
