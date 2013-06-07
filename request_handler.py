@@ -28,13 +28,15 @@ def bursting_phrases():
   phrases = phrase_fetcher.get_bursting_phrases()
   stories = [storyapi.Story([phrase],access_token=access_token) for phrase in phrases]
 
-  #TODO: sort the stories by click rate
   for story in stories:
     story.rt_url = "http://rt.ly/story?story_id=" + story._story_id
     story.phrases = story.get_story_phrases()
-    #story.rates = story.get_story_rates()
+    story.rate = story.get_story_rates()
     story_gifs = giphy.giphy_search(story.phrases)
     story.gif_urls = story_gifs
+
+  #sort by the story rate:
+  stories = sorted(stories, key=lambda story: story.rate, reverse=True)
 
   return render_template("stories.html",stories=stories)
 

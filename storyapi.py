@@ -45,7 +45,7 @@ class Story:
     self._phrases = phrases
     return phrases
 
-    def get_story_rates(self):
+  def get_story_rates(self):
         params = {"access_token": self._access_token,
                   "story_id": self._story_id,
                   "field": "rates"
