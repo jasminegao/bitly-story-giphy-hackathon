@@ -57,8 +57,7 @@ class Story:
         if not self.check_status(data):
             return
         titles = []
-        for title in data['data']['title']:
-            titles.append(title)
+        titles.append(data['data']['title'])
         self._titles = titles
         return titles
 
