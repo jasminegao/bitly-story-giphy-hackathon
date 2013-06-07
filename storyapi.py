@@ -9,6 +9,7 @@ from collections import defaultdict
 STORY_FROM_PHRASES_URL = "https://api-ssl.bitly.com/v3/story_api/story_from_phrases"
 STORY_PHRASES_URL = "https://api-ssl.bitly.com/v3/story_api/distribution"
 STORY_METADATA_URL = "https://api-ssl.bitly.com/v3/story_api/metadata"
+STORY_TITLE_URL = "https://api-ssl.bitly.com/v3/story_api/title"
 
 class Story:
 
@@ -19,6 +20,8 @@ class Story:
     self._access_token = access_token
     self._story_id = None
     self._story_phrases = []
+    self._story_titles = []
+    self.story_rates = rates
     params = {"access_token": access_token, "phrases": phrases[0]}
     response = requests.get(STORY_FROM_PHRASES_URL, params=params)
     data = response.json()
@@ -37,13 +40,27 @@ class Story:
     response = requests.get(STORY_PHRASES_URL, params=params)
     data = response.json()
     if not self.check_status(data):
-      return
+        return
     phrases = []
     for phrase, rate in data['data']['phrases']:
       if not phrase == "_COUNT_":
         phrases.append(phrase)
     self._phrases = phrases
     return phrases
+
+  def get_story_titles(self):
+        params = {"access_token": self._access_token,
+                  "story_id": self._story_id
+                  }
+        response = requests.get(STORY_TITLE_URL, params=params)
+        data = response.json()
+        if not self.check_status(data):
+            return
+        titles = []
+        for title in data['data']['title']:
+            titles.append(title)
+        self._titles = titles
+        return titles
 
   def get_story_rates(self):
         params = {"access_token": self._access_token,
