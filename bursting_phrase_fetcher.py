@@ -4,9 +4,7 @@
   e.g. the storyapi and the burstingapi.
 """
 
-import ujson as json
-from tornado.httpclient import HTTPClient
-import urllib
+import requests
 from collections import defaultdict
 
 
@@ -15,7 +13,6 @@ BURSTING_SERVER = "rt.ly"
 
 class BurstingPhraseFetcher:
   def __init__(self, access_token=None, api_key=None):
-    self._hc = HTTPClient()
     self._access_token = access_token
     self._api_key = api_key
 
@@ -26,24 +23,6 @@ class BurstingPhraseFetcher:
     return True
 
 
-  def get_hot_phrases(self):
-    url = "http://" + BURSTING_SERVER  + "/data/recentphrases" + "?"
-
-    if self._api_key:
-      params["api_key"] = self._api_key
-    if self._access_token:
-      params["access_token"] = self._access_token
-
-    request_url = url + urllib.urlencode(params)
-    data_raw = self._hc.fetch(request_url)
-    data = json.loads(data_raw.body)
-    check_status(data)
-    if 'data' in data and 'phrases' in data['data']:
-      phrases = data['data']['phrases']
-      return phrases
-    return []
-
-
   def get_bursting_phrases_data(self):
     url = "http://" + BURSTING_SERVER  + "/data/bursts" + "?"
     params = {}
@@ -52,9 +31,8 @@ class BurstingPhraseFetcher:
     if self._access_token:
       params["access_token"] = self._access_token
 
-    request_url = url + urllib.urlencode(params)
-    data_raw = self._hc.fetch(request_url)
-    data = json.loads(data_raw.body)
+    data_raw = requests.get(url, params=params)
+    data = response.json()
     if not self.check_status(data):
       return []
     if 'data' in data and 'phrases' in data['data']:
@@ -69,8 +47,6 @@ class BurstingPhraseFetcher:
     for d in phrase_data:
       phrases.append(d['phrase'])
     return phrases
-
-
 
 
 

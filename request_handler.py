@@ -2,7 +2,6 @@
 A simple request handler that will be access from javascript.
 """
 
-import ujson as json
 from flask import Flask
 from flask import render_template
 import bursting_phrase_fetcher
