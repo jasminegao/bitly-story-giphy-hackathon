@@ -25,7 +25,7 @@ class Story:
       return
     self._story_id = data['data']['story_id']
 
-  def get_story_phrases(self,limit=20):
+  def get_story_phrases(self,limit=10):
     if not self._story_id:
       return
     params = {"access_token": self._access_token,
@@ -41,8 +41,10 @@ class Story:
     for phrase, rate in data['data']['phrases']:
       if not phrase == "_COUNT_":
         phrases.append(phrase)
-    self._phrases = phrases
+    #self._phrases = phrases
     return phrases
+
+
 
   def check_status(self, response):
     if response["status_txt"] != "OK":

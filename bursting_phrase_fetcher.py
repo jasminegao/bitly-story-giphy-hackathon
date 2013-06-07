@@ -28,8 +28,12 @@ class BurstingPhraseFetcher:
 
   def get_hot_phrases(self):
     url = "http://" + BURSTING_SERVER  + "/data/recentphrases" + "?"
-    #params = {"api_key": API_KEY}
-    params = {"access_token": self._access_token}
+
+    if self._api_key:
+      params["api_key"] = self._api_key
+    if self._access_token:
+      params["access_token"] = self._access_token
+
     request_url = url + urllib.urlencode(params)
     data_raw = self._hc.fetch(request_url)
     data = json.loads(data_raw.body)
@@ -40,7 +44,7 @@ class BurstingPhraseFetcher:
     return []
 
 
-  def get_bursting_phrases(self):
+  def get_bursting_phrases_data(self):
     url = "http://" + BURSTING_SERVER  + "/data/bursts" + "?"
     params = {}
     if self._api_key:
@@ -58,4 +62,16 @@ class BurstingPhraseFetcher:
       return phrases
       print request_url
     return []
+
+  def get_bursting_phrases(self):
+    phrase_data = self.get_bursting_phrases_data()
+    phrases = []
+    for d in phrase_data:
+      phrases.append(d['phrase'])
+    return phrases
+
+
+
+
+
 
