@@ -13,7 +13,13 @@
         <h1>What's going on in the internet??!<h1>
 
     {% for story in stories %}
-        <p><b>{{story.phrases}}:</b>{{story.gif_urls}}</p>
+        <p><b>{{ " ".join(story.phrases) }}:</b></p>
+        <div>
+         {% for gif_url in story.gif_urls %}
+           <img src="{{gif_url}}" />
+         {% endfor %}
+        </div>
+        </div>
     {% endfor %}
     </body>
 </html>

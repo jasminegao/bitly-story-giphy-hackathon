@@ -30,6 +30,7 @@ def bursting_phrases():
   phrases = phrase_fetcher.get_bursting_phrases()
   stories = [storyapi.Story([phrase],access_token=access_token) for phrase in phrases]
 
+  #TODO: sort the stories by click rate
   for story in stories:
     story.phrases = story.get_story_phrases()
     print story.phrases
