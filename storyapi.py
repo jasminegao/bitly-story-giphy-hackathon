@@ -8,6 +8,7 @@ from collections import defaultdict
 
 STORY_FROM_PHRASES_URL = "https://api-ssl.bitly.com/v3/story_api/story_from_phrases"
 STORY_PHRASES_URL = "https://api-ssl.bitly.com/v3/story_api/distribution"
+STORY_METADATA_URL = "https://api-ssl.bitly.com/v3/story_api/metadata"
 
 class Story:
 
@@ -41,10 +42,21 @@ class Story:
     for phrase, rate in data['data']['phrases']:
       if not phrase == "_COUNT_":
         phrases.append(phrase)
-    #self._phrases = phrases
+    self._phrases = phrases
     return phrases
 
-
+    def get_story_rates(self):
+        params = {"access_token": self._access_token,
+                  "story_id": self._story_id,
+                  "field": "rates"
+                  }
+        response = requests.get(STORY_METADATA_URL, params=params)
+        data = response.json()
+        if not self.check_status(data):
+            return
+        rates = data['data']['rates']
+        self._rates = rates
+        return rates
 
   def check_status(self, response):
     if response["status_txt"] != "OK":
